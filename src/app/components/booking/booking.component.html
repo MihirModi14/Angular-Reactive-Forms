@@ -1,0 +1,98 @@
+{{ bookingForm.value | json }}
+<!-- {{ bookingForm.pristine | json }} form has not been modified by the user -->
+<!-- {{ bookingForm.dirty | json }} means the user has changed the input value -->
+
+<div class="container card mt-3">
+    <div class="card-body">
+        <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label>Room Id</label>
+                <input type="text" name="roomId" formControlName="roomId" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label>Booking Amount</label>
+                <input type="text" name="bookingAmount" formControlName="bookingAmount" class="form-control">
+                <div *ngIf="this.bookingForm.get('bookingAmount').invalid && this.bookingForm.get('bookingAmount').touched"
+                    class="alert alert-danger mt-1">
+                    <div *ngIf="this.bookingForm.get('bookingAmount').errors?.['required']">
+                        Amount is required.
+                    </div>
+                    <div *ngIf="this.bookingForm.get('bookingAmount').errors?.['minlength']">
+                        Amount is less.
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Guest Email</label>
+                <input type="text" name="guestEmail" formControlName="guestEmail" class="form-control">
+                <div *ngIf="bookingForm.get('guestEmail').invalid && bookingForm.get('guestEmail').touched"
+                    class="alert alert-danger mt-1">
+                    <div *ngIf="bookingForm.get('guestEmail').hasError('required')">
+                        Email is required.
+                    </div>
+                    <div *ngIf="bookingForm.get('guestEmail').hasError('email')">
+                        Email is not valid.
+                    </div>
+                    <div *ngIf="bookingForm.get('guestEmail').hasError('invalidChar')">
+                        Remove invalid Character
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input type="text" name="mobileNumber" formControlName="mobileNumber" class="form-control">
+                <div *ngIf="bookingForm.get('mobileNumber')?.errors && bookingForm.get('mobileNumber').touched"
+                    class="alert alert-danger mt-1">
+                    <div *ngIf="bookingForm.get('mobileNumber').hasError('invalidNumber')">
+                        Remove 123 from Number.
+                    </div>
+                    <div *ngIf="bookingForm.get('mobileNumber').hasError('required')">
+                        Number is Required
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" *ngIf="bookingForm.get('passport')">
+                <label>Passport</label>
+                <input type="text" name="passport" formControlName="passport" class="form-control">
+            </div>
+
+            <form formGroupName="address">
+                <div class="form-group">
+                    <label>City</label>
+                    <input type="text" name="city" formControlName="city" class="form-control">
+                </div>
+            </form>
+
+            <div formArrayName="guests">
+                <div *ngFor="let guest of guests.controls; let idx = index" [formGroupName]="idx">
+                    <div class="form-group">
+                        <label>Guest Name</label>
+                        <input type="text" name="guestName" formControlName="guestName" class="form-control">
+                        <!-- <div *ngIf="bookingForm.get(['guests', idx, 'guestName']).invalid && bookingForm.get(['guests', idx, 'guestName']).touched"
+                            class="alert alert-danger mt-1">
+                            <div *ngIf="bookingForm.get(['guests', idx, 'guestName']).hasError('required')">
+                                Guest Name is required.
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="form-group">
+                        <label>Guest Age</label>
+                        <input type="text" name="guestAge" formControlName="guestAge" class="form-control">
+                    </div>
+                    <input type="submit" value="Delete Guest" (click)="removeGuest(idx)" class="btn btn-primary mb-2">
+                </div>
+            </div>
+            <input type="submit" value="Add Guest" (click)="addGuest()" class="btn btn-primary btn-block">
+
+            <input type="submit" [disabled]="bookingForm.invalid" value="Submit" class="btn btn-primary btn-block">
+
+            <input type="submit" value="Toggle Passport"
+                (click)="bookingForm.get('passport')? removePassport() : addPassport()"
+                class="btn btn-primary btn-block">
+        </form>
+    </div>
+</div>
