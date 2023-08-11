@@ -1,0 +1,25 @@
+<form (submit)="onSubmit()" [formGroup]="employeeForm">
+    <mat-form-field appearance="fill" floatLabel="always" class="mb-1">
+        <mat-label>First Name</mat-label>
+        <input type="text" placeholder="First Name" formControlName="firstName" matInput>
+        <mat-error *ngIf="employeeForm.controls['firstName']?.hasError('required')">First name is required</mat-error>
+        <mat-error *ngIf="employeeForm.controls['firstName']?.hasError('invalidName')">First name is invalid</mat-error>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill" floatLabel="always" *ngIf="this.employeeForm.get('lastName')" class="mb-1">
+        <mat-label>Last Name</mat-label>
+        <input type="text" placeholder="Last Name" formControlName="lastName" matInput>
+        <mat-error *ngIf="employeeForm.controls['lastName']?.hasError('required')">Last name is required</mat-error>
+        <mat-error *ngIf="employeeForm.controls['lastName']?.hasError('maxlength')">Max length 5 only</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" floatLabel="always" *ngIf="this.employeeForm.get('age')" class="mb-1">
+        <mat-label>Age</mat-label>
+        <input placeholder="Age" formControlName="age" matInput>
+        <mat-error *ngIf="employeeForm.controls['age']?.hasError('required')">Age is required</mat-error>
+        <mat-error *ngIf="employeeForm.controls['age']?.hasError('min')">Min age should be 18</mat-error>
+        <mat-error *ngIf="employeeForm.controls['age']?.hasError('max')">Max age should be 60</mat-error>
+    </mat-form-field>
+
+    <button type="submit" mat-raised-button color="primary">Submit</button>
+</form>

@@ -1,0 +1,28 @@
+<form [formGroup]="userForm">
+    <div formArrayName="usersArray">
+        <div *ngFor="let user of userArrayControls; let i = index">
+            <div [formGroupName]="i">
+
+                <mat-form-field appearance="fill" floatLabel="always">
+                    <mat-label>Name #{{ i + 1 }}</mat-label>
+                    <input type="text" placeholder="Name" formControlName="name" matInput>
+                    <mat-error *ngIf="user.get('name')?.touched && user.get('name')?.errors">Name is
+                        required</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" floatLabel="always">
+                    <mat-label>Age #{{ i + 1 }}</mat-label>
+                    <input type="text" placeholder="Age" formControlName="age" matInput>
+                    <mat-error *ngIf="user.get('age')?.touched && user.get('age')?.errors">Age is required</mat-error>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" (click)="removeUser(i)">Remove</button>
+
+            </div>
+        </div>
+    </div>
+
+    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Submit</button>
+    <button mat-raised-button color="primary" (click)="addUser()">Add User</button>
+
+</form>
